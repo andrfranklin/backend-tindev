@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,11 @@
   },
   "homepage": "https://github.com/andrfranklin/backend-tindev#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "axios": "^0.20.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
