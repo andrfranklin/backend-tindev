@@ -2,6 +2,9 @@ const Dev = require("../models/Dev");
 
 module.exports = {
     async store(req, res){
+
+        console.log(req.io, req.connectedUser);
+
         const { user } = req.headers;
         const { devID } = req.params;
 
@@ -17,7 +20,17 @@ module.exports = {
         }
 
         if (targetUser.likes.includes(loggedUser._id)) {
-            console.log("DEU MATCH");
+            const loggedsocket = req.connectedUser[user];
+            const targetsocket = req.connectedUser[devID];
+
+            if (loggedsocket) {
+                req.io.to(loggedsocket).emit('match', targetUser);
+            }
+
+            if (targetsocket) {
+                req.io.to(targetsocket).emit('match', loggedUser);
+            }
+
         }
 
         loggedUser.likes.push(targetUser._id);

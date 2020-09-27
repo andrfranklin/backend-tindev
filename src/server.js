@@ -5,12 +5,31 @@ const cors = require( 'cors');
 
 
 
-const server = express();
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
-server.use(express.json());
+const connectedUser = {};
 
-server.use(cors());
+io.on('connection', socket => {
+    const { user } = socket.handshake.query;
 
-server.use(routes);
+    connectedUser[user] = socket.id;
+});
+
+
+app.use((req, res, next) => {
+    req.io = io;
+    req.connectedUser = connectedUser;
+
+    return next();
+});
+
+
+app.use(express.json());
+
+app.use(cors());
+
+app.use(routes);
 
 server.listen(3333);
